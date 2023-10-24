@@ -20,3 +20,4 @@ annotations
 src
 text2img-large
 text2img-large/model.ckpt
+*.sh
