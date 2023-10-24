@@ -20,7 +20,19 @@ class COCOGenBase(Dataset):
         self.data_root = data_root
         with open(self.json_path, "r") as f:
             cg_index = json.load(f)
-        self.image_captions = [(os.path.join(self.data_root,str(index['id']),img),index['caption']) for index in cg_index for img in os.listdir(os.path.join(self.data_root,str(index['id']))) ]
+
+        self.image_captions = []
+
+        for index in cg_index['annotations']:
+            if os.path.isdir(os.path.join(self.data_root,str(index['id']))):
+                _, _, files = next(os.walk(os.path.join(self.data_root,str(index['id']))))
+                file_count = len(files)
+                if file_count is 16:
+                    for img in os.listdir(os.path.join(self.data_root,str(index['id']))):
+                        self.image_captions.append((os.path.join(self.data_root,str(index['id']),img),index['caption']))
+                   
+        # self.image_captions = [(os.path.join(self.data_root,str(index['id']),img),index['caption']) for index in cg_index['annotations'] for img in os.listdir(os.path.join(self.data_root,str(index['id'])))]
+
         self._length = len(self.image_captions)
 
         self.size = size
@@ -62,12 +74,12 @@ class COCOGenBase(Dataset):
 
 class COCOGenTrain(COCOGenBase):
     def __init__(self, **kwargs):
-        super().__init__(json_path="/home/ymp5078/projects/datasets/coco/coco_gen.json", data_root="/home/ymp5078/projects/video_gen/stable-diffusion/outputs/coco_gen", **kwargs)
+        super().__init__(json_path="/mnt/island/usr/mvm7168/diffusion/cse597-style-token/annotations/captions_val2014.json", data_root="/mnt/island/usr/mvm7168/diffusion/cse597-style-token/outputs/coco_gen", **kwargs)
 
 
 class COCOGenValidation(COCOGenBase):
     def __init__(self, flip_p=0., **kwargs):
-        super().__init__(json_path="/home/ymp5078/projects/datasets/coco/coco_gen.json", data_root="/home/ymp5078/projects/video_gen/stable-diffusion/outputs/coco_gen",
+        super().__init__(json_path="/mnt/island/usr/mvm7168/diffusion/cse597-style-token/annotations/captions_val2014.json", data_root="/mnt/island/usr/mvm7168/diffusion/cse597-style-token/outputs/coco_gen",
                          flip_p=flip_p, **kwargs)
 
 

@@ -269,13 +269,16 @@ def main():
             data = f.read().splitlines()
             data = list(chunk(data, batch_size))
 
-    with open('/home/ymp5078/projects/datasets/coco/coco_gen.json','r') as f:
+    with open('/mnt/island/usr/mvm7168/diffusion/cse597-style-token/annotations/captions_val2014.json','r') as f:
         coco_cap = json.load(f)
     print(len(coco_cap))
     # exit()
+
+    # Pierre-Henri de Valenciennes
+    # John Constable
     
-    for cap in coco_cap:
-        data = [batch_size * [cap["caption"] + ' paint by Vincent van Gogh']]
+    for cap in coco_cap['annotations']:
+        data = [batch_size * [cap["caption"] + ' painted by Pierre-Henri de Valenciennes']]
         
         sample_path = os.path.join(outpath, f"{cap['id']}")
         if os.path.exists(sample_path):

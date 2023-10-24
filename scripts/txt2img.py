@@ -322,6 +322,9 @@ def main():
                         if not opt.skip_grid:
                             all_samples.append(x_checked_image_torch)
 
+                        token = model.cond_stage_model.transformer.prompt_token
+                        np.save(f"outputs/tokens/style_token-{grid_count:04}", token.cpu())
+
                 if not opt.skip_grid:
                     # additionally, save as grid
                     grid = torch.stack(all_samples, 0)
